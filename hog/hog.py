@@ -223,12 +223,19 @@ def announce_highest(who, last_score=0, running_high=0):
     assert who == 0 or who == 1, 'The who argument should indicate a player.'
     # BEGIN PROBLEM 7
     def say(score0, score1):
-        running_high = 0
-        last_score = 0
-        if abs(last_score - score1) > running_high:
-            print(last_score, "point(s)! That's a record gain for Player ", str(who) , "!")
-            running_high = abs(last_score-score1)
-        return say
+        if who == 0:
+            score = score0
+        else:
+            score = score1
+
+        gain = score - last_score
+
+        if gain > running_high:
+            print(gain, "point(s)! That's a record gain for Player", str(who) + "!")
+            return announce_highest(who, score, gain)
+        else:
+            return announce_highest(who, score, running_high)
+
     return say
 
 
