@@ -142,7 +142,7 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
     # END PROBLEM 5
     #take_turn(num_rolls, opponent_score, dice=six_sided, goal=GOAL_SCORE):
     # (note that the indentation for the problem 6 prompt (***YOUR CODE HERE***) might be misleading)
-    # BEGIN PROBLEM 6
+    # BEGIN PROBLEM 6p
     "*** YOUR CODE HERE ***"
     
     # END PROBLEM 6
@@ -280,7 +280,16 @@ def make_averaged(original_function, trials_count=1000):
     3.0
     """
     # BEGIN PROBLEM 8
-    "*** YOUR CODE HERE ***"
+    #
+    def average_original(*args):
+        num = 0
+        for each in range(trials_count):
+            num += original_function(*args)
+
+        average = num/trials_count
+        return average
+    return average_original
+    
     # END PROBLEM 8
 
 
@@ -293,8 +302,29 @@ def max_scoring_num_rolls(dice=six_sided, trials_count=1000):
     >>> max_scoring_num_rolls(dice)
     1
     """
-    # BEGIN PROBLEM 9
-    "*** YOUR CODE HERE ***"
+    # use make_averaged and average_original
+    #take_turn(strategy0(score0, score1), score1, dice ,goal)
+    max_average = 0
+    
+    
+    for i in range(1,11):
+        averaged = make_averaged(roll_dice, trials_count)
+        roll_average = averaged(i, dice)
+
+        if roll_average > max_average:
+                max_average = roll_average
+                roll = i
+
+    return roll
+    #find the average score for each quantity of rolls(1,10)
+    #checks if current average is greater than the max average
+    #if it is, save the roll_number and max_average
+    #once its iterated through (1,10)
+    #return roll_number
+
+    #store average in dictionary(key range, definition averages)
+    #find (lowest key) max average, return key
+    #store max average
     # END PROBLEM 9
 
 
@@ -335,7 +365,16 @@ def picky_piggy_strategy(score, opponent_score, cutoff=8, num_rolls=6):
     returns NUM_ROLLS otherwise.
     """
     # BEGIN PROBLEM 10
-    return 6  # Remove this line once implemented.
+    gain = picky_piggy(opponent_score)
+    
+    if gain >= cutoff:
+        return 0
+    return num_rolls
+    #call picky piggy, to check what the score would be
+    #check if the score is greater than or equal to  the cutoff
+    #return 0 if it is
+    #return num_rolls if not
+    # Remove this line once implemented.
     # END PROBLEM 10
 
 
@@ -345,7 +384,24 @@ def hog_pile_strategy(score, opponent_score, cutoff=8, num_rolls=6):
     Otherwise, it returns NUM_ROLLS.
     """
     # BEGIN PROBLEM 11
-    return 6  # Remove this line once implemented.
+    
+    potential_score = score
+    if picky_piggy_strategy(score, opponent_score, cutoff, num_rolls) == 0: 
+        return 0
+    
+    potential_score += picky_piggy(opponent_score)
+    if hog_pile(potential_score, opponent_score) == potential_score: 
+        return 0
+    
+    return num_rolls
+    #call picky_piggy strategy and check if its 0, 
+    # if it is, return 0
+    # if not, 
+    # current score += picky piggy amt
+    # check for hog_pile
+    # if hog_pile would happen, return 0
+    # else: return num_rolls
+      # Remove this line once implemented.
     # END PROBLEM 11
 
 
